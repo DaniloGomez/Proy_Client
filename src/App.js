@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import miroutes from "./config/routes";
+import AuthProvider from "./providers/authProvider";
+import "./App.scss";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    /* Siempre que naveguemos en el sistema se validara
+    si estamos logueados */
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {miroutes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <route.layout>
+                  <route.component />
+                </route.layout>
+              }
+            />
+          ))}
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
-
-export default App;
